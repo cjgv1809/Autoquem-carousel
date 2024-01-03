@@ -19,15 +19,15 @@ html {
 }
 
 .carousel {
-  width: 80rem;
-  height: 80rem;
+  width: 50rem;
+  height: 50rem;
   border: 7rem solid#eebe97;
   border-radius: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  top: -55%;
+  top: 10%;
   flex-shrink: 0;
   transition: rotate 1s;
 }
@@ -54,8 +54,19 @@ html {
 }
 
 .slide.active img {
-  transform: scale(2.5);
-  transition: transform 0.5s 0.5s;
+  transform: scale(1.2);
+  background-color: #f00;
+  padding: 1rem;
+  box-shadow: 4px 2px 0 #000;
+  transition: transform 0.5s ease-in-out 0.5s, background-color 0.5s ease-in-out 0.5s;
+}
+
+.slide > div {
+  display: none;
+}
+
+.slide.active > div {
+  display: block;
 }
 
 .slide img {
@@ -82,5 +93,6 @@ html {
 }
 
 .controls img {
-  width: 10rem;
+  width: 4rem;
+  aspect-ratio: 1;
 }

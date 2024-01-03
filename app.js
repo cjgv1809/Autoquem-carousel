@@ -18,8 +18,17 @@ const intervalFn = () => {
     const activeLink = document.querySelector(`.controls a:nth-child(${j})`);
     activeLink.classList.add("active");
 
-    j === 4 && (j = 0);
+    rotateText(activeSlide, 0); // Rotate the text within the active slide with a fixed adjustment
+
+    if (j === 4) j = 0;
   }, 4000);
+};
+
+const rotateText = (slide, rotationAdjustment) => {
+  const textElements = slide.querySelectorAll("h4, p, span");
+  textElements.forEach((element) => {
+    element.style.transform = `rotate(${rotationAdjustment}deg)`;
+  });
 };
 
 intervalFn();
@@ -39,6 +48,8 @@ controlLinks.forEach((control) => {
 
     document.querySelector("a.active").classList.remove("active");
     control.classList.add("active");
+
+    rotateText(activeSlide, 0); // Rotate the text within the active slide with a fixed adjustment
   });
 });
 
