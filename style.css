@@ -9,56 +9,133 @@ html {
 }
 
 .slideshow {
-  height: 100vh;
+  min-height: 100vh;
   background-color: antiquewhite;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.slideshow::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 8%;
+  transform: translate(-50%, -50%) rotate(180deg);
+  width: 85vw;
+  height: 85vw;
+  /* max-width: 500px;
+  max-height: 500px; */
+  border: 2px solid #ea0000;
+  border-radius: 50%;
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 50% 100%, 0 50%);
+  overflow: hidden;
 }
 
 .carousel {
-  width: 50rem;
-  height: 50rem;
-  border: 7rem solid#eebe97;
-  border-radius: 100%;
+  width: 40rem;
+  height: 40rem;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  top: 10%;
+  top: -24%;
   flex-shrink: 0;
-  transition: rotate 1s;
+  transition: transform 1s;
 }
 
 .slide {
   width: 20rem;
+  height: 20rem;
   position: absolute;
+  z-index: 1;
+  transform-origin: center center;
+  transition: transform 0.5s, background-color 0.5s;
 }
 
+@media screen and (max-width: 768px) {
+  .carousel {
+    width: 90rem;
+    height: 90rem;
+  }
+
+  .slide {
+    width: 15rem;
+    height: 15rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .carousel {
+    width: 50rem;
+    height: 50rem;
+  }
+
+  .slide {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .slide:nth-child(1) {
+    bottom: -15rem;
+  }
+
+  .slide:nth-child(2) {
+    left: -15rem;
+  }
+
+  .slide:nth-child(3) {
+    top: -15rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .slide:nth-child(1) {
+    bottom: -10rem;
+  }
+
+  .slide:nth-child(2) {
+    left: -10rem;
+  }
+
+  .slide:nth-child(3) {
+    top: -10rem;
+  }
+}
+
+.slide.active:nth-child(1),
 .slide:nth-child(1) {
-  bottom: -20rem;
+  bottom: -10rem;
+  transform: rotate(0deg);
 }
 
+.slide.active:nth-child(2),
 .slide:nth-child(2) {
-  left: -20rem;
+  left: -18rem;
+  transform: rotate(-270deg);
 }
 
+.slide.active:nth-child(3),
 .slide:nth-child(3) {
-  top: -20rem;
+  top: -10rem;
+  transform: rotate(-180deg);
 }
 
-.slide:nth-child(4) {
-  right: -20rem;
-}
-
-.slide.active img {
-  transform: scale(1.2);
-  background-color: #f00;
+.slide.active {
+  background-color: #ea0000;
+  border-radius: 0.5rem;
   padding: 1rem;
-  box-shadow: 4px 2px 0 #000;
-  transition: transform 0.5s ease-in-out 0.5s, background-color 0.5s ease-in-out 0.5s;
+  box-shadow: 0 4px 4px 0 #00000040;
+  transform-origin: center center;
+  transition: transform 0.5s ease-in-out 0.5s,
+    background-color 0.5s ease-in-out 0.5s, box-shadow 0.5s ease-in-out 0.5s;
 }
 
 .slide > div {
@@ -66,33 +143,52 @@ html {
 }
 
 .slide.active > div {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #000;
+  color: #fff;
+  padding: 1rem;
+  width: 100%;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.slide.active > div h4 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.slide.active > div p {
+  font-size: 0.625rem;
+  font-weight: 400;
+  line-height: 10px;
+}
+
+.slide.active > div > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slide.active > div > div img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.slide.active > div > div span {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: right;
 }
 
 .slide img {
   width: 100%;
   object-fit: cover;
-  transition: transform 0.5s;
-}
-
-.controls {
-  position: sticky;
-  bottom: 5rem;
-}
-
-.controls a {
-  padding: 1rem;
-  display: inline-block;
-  cursor: pointer;
-  border-radius: 10rem;
-  transition: background-color 1s;
-}
-
-.controls a.active {
-  background-color: #7dbd77;
-}
-
-.controls img {
-  width: 4rem;
-  aspect-ratio: 1;
+  transition: transform 0.5s ease-in-out;
 }

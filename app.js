@@ -1,57 +1,38 @@
 const carousel = document.querySelector(".carousel");
 const slides = document.querySelectorAll(".slide");
-const controlLinks = document.querySelectorAll(".controls a");
+const ROTATION_ANGLE = 90;
 
 let i = 0,
-  j = 1,
   intervalId;
 
 const intervalFn = () => {
   intervalId = setInterval(() => {
-    carousel.style.rotate = `-${++i * 90}deg`;
+    const rotationAngle = -i * ROTATION_ANGLE;
+    carousel.style.transform = `rotate(${rotationAngle}deg)`;
 
-    document.querySelector(".slide.active").classList.remove("active");
-    const activeSlide = document.querySelector(`.slide:nth-child(${++j})`);
-    activeSlide.classList.add("active");
+    const activeIndex = Array.from(slides).findIndex((slide) =>
+      slide.classList.contains("active")
+    );
 
-    document.querySelector("a.active").classList.remove("active");
-    const activeLink = document.querySelector(`.controls a:nth-child(${j})`);
-    activeLink.classList.add("active");
+    slides[activeIndex].classList.remove("active");
 
-    rotateText(activeSlide, 0); // Rotate the text within the active slide with a fixed adjustment
+    const j = (activeIndex + 1) % slides.length;
 
-    if (j === 4) j = 0;
+    // const slideRotation = -j * ROTATION_ANGLE;
+    // slides[j].style.transform = `rotate(${slideRotation}deg)`;
+
+    slides[j].classList.add("active");
+
+    if (j === 0) {
+      i = 0;
+      carousel.style.transform = "rotate(0deg)";
+    }
+
+    i++;
   }, 4000);
 };
 
-const rotateText = (slide, rotationAdjustment) => {
-  const textElements = slide.querySelectorAll("h4, p, span");
-  textElements.forEach((element) => {
-    element.style.transform = `rotate(${rotationAdjustment}deg)`;
-  });
-};
-
 intervalFn();
-
-controlLinks.forEach((control) => {
-  control.addEventListener("click", () => {
-    clearInterval(intervalId);
-    carousel.style.rotate = `-${
-      (i - j + Number(control.dataset.index)) * 90
-    }deg`;
-
-    document.querySelector(".slide.active").classList.remove("active");
-    const activeSlide = document.querySelector(
-      `.slide:nth-child(${control.dataset.index})`
-    );
-    activeSlide.classList.add("active");
-
-    document.querySelector("a.active").classList.remove("active");
-    control.classList.add("active");
-
-    rotateText(activeSlide, 0); // Rotate the text within the active slide with a fixed adjustment
-  });
-});
 
 carousel.addEventListener("mouseenter", () => {
   clearInterval(intervalId);

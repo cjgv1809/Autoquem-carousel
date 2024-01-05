@@ -1,0 +1,29 @@
+/* Add a position:relative to the container */
+.flame-products {
+  position: relative;
+}
+
+/* Set position:absolute for the flame image */
+.flame-products .flame-image {
+  position: absolute;
+  top: -5%;
+  left: -11%;
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+/* Set default state to hide the flame image */
+.flame-products .flame-image {
+  opacity: 0;
+  transform: translate(1%);
+}
+
+/* Add the in-view class to show the flame image */
+.flame-products.in-view .flame-image {
+  opacity: 1;
+  transform: translate(0);
+}
+
+.flame-products.in-view > .original-image {
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
