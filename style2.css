@@ -14,7 +14,7 @@
 /* Set default state to hide the flame image */
 .flame-products .flame-image {
   opacity: 0;
-  transform: translate(1%);
+  transform: translate(10%);
 }
 
 /* Add the in-view class to show the flame image */
@@ -25,5 +25,5 @@
 
 .flame-products.in-view > .original-image {
   opacity: 0;
-  transition: opacity 0.1s ease-in-out;
+  transition: transform 0.5s ease-in-out;
 }
