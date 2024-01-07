@@ -41,9 +41,7 @@ html {
   justify-content: center;
   align-items: center;
   position: relative;
-  /* top: -20%; */
-  flex-shrink: 0;
-  transition: transform 1s;
+  transition: transform 1s ease-in-out;
 }
 
 .slide {
@@ -56,39 +54,45 @@ html {
 }
 
 .slide:nth-child(1) {
-  bottom: calc(100% - 80rem);
+  bottom: calc(100% - 60rem);
+  transition: transform 0.5s ease-in-out;
 }
 
 .slide:nth-child(2) {
-  left: calc(100% - 80rem);
+  left: calc(100% - 60rem);
+  transition: transform 0.5s ease-in-out;
 }
 
 .slide:nth-child(3) {
-  top: calc(100% - 80rem);
+  top: calc(100% - 60rem);
+  transition: transform 0.5s ease-in-out;
 }
 
 .slide:nth-child(4) {
-  right: calc(100% - 80rem);
+  right: calc(100% - 60rem);
+  transition: transform 0.5s ease-in-out;
 }
 
 .slide.active:nth-child(1) {
-  bottom: -20rem;
-  /* transform: rotate(0deg); */
+  bottom: calc(100% - 30rem);
 }
 
 .slide.active:nth-child(2) {
-  left: -20rem;
-  /* transform: rotate(90deg); */
+  left: calc(100% - 30rem);
 }
 
 .slide.active:nth-child(3) {
-  top: -20rem;
-  /* transform: rotate(180deg); */
+  top: calc(100% - 30rem);
 }
 
 .slide.active:nth-child(4) {
-  right: -20rem;
-  /* transform: rotate(-90deg); */
+  right: calc(100% - 30rem);
+}
+
+@media screen and (min-width: 480px) {
+  .slideshow::after {
+    top: 40%;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -127,32 +131,55 @@ html {
   }
 } */
 
-@media screen and (max-width: 768px) {
-  .carousel {
-    width: 10rem;
-    height: 10rem;
+@media screen and (max-width: 1024px) {
+  .slide:nth-child(1) {
+    bottom: calc(100% - 51rem);
+  }
+
+  .slide:nth-child(2) {
+    left: calc(100% - 51rem);
+  }
+
+  .slide:nth-child(3) {
+    top: calc(100% - 51rem);
+  }
+
+  .slide:nth-child(4) {
+    right: calc(100% - 51rem);
   }
 }
 
 @media screen and (max-width: 768px) {
   .slide:nth-child(1) {
-    bottom: -60rem;
+    bottom: calc(100% - 48rem);
+    width: 15rem;
+    height: 15rem;
   }
 
   .slide:nth-child(2) {
-    left: -60rem;
+    left: calc(100% - 48rem);
+    width: 15rem;
+    height: 15rem;
   }
 
   .slide:nth-child(3) {
-    top: -60rem;
+    top: calc(100% - 48rem);
+    width: 15rem;
+    height: 15rem;
   }
 
   .slide:nth-child(4) {
-    right: -60rem;
+    right: calc(100% - 48rem);
+    width: 15rem;
+    height: 15rem;
   }
 }
 
 @media screen and (max-width: 480px) {
+  .slideshow::after {
+    display: none;
+  }
+
   .slide:nth-child(1) {
     bottom: -40rem;
   }
