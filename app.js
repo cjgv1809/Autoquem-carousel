@@ -1,58 +1,3 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//   const carousel = document.querySelector(".carousel");
-//   const slides = document.querySelectorAll(".slide");
-//   const ROTATION_ANGLE = 360 / slides.length; // Adjust for the number of slides
-
-//   document.documentElement.style.setProperty(
-//     "--rotation-angle",
-//     ROTATION_ANGLE,
-//   );
-
-//   let i = 1,
-//     intervalId;
-
-//   const intervalFn = () => {
-//     intervalId = setInterval(() => {
-//       const activeIndex = Array.from(slides).findIndex((slide) =>
-//         slide.classList.contains("active"),
-//       );
-
-//       slides[activeIndex].classList.remove("active");
-
-//       for (let j = 0; j < slides.length; j++) {
-//         const angle = j * ROTATION_ANGLE;
-//         const distance = 10; // Adjust the distance based on your design
-//         const x = distance * Math.cos(angle * (Math.PI / 180));
-//         const y = distance * Math.sin(angle * (Math.PI / 180));
-
-//         slides[
-//           j
-//         ].style.transform = `translate(${x}rem, ${y}rem) rotate(${angle}deg)`;
-//         slides[j].classList.remove("active");
-//       }
-
-//       const nextIndex = (activeIndex + 1) % slides.length;
-//       slides[nextIndex].classList.add("active");
-
-//       i++;
-//     }, 4000);
-//   };
-
-//   intervalFn();
-
-//   setTimeout(() => {
-//     carousel.addEventListener("mouseenter", () => {
-//       clearInterval(intervalId);
-//       console.log("Pause");
-//     });
-
-//     carousel.addEventListener("mouseleave", () => {
-//       intervalFn();
-//       console.log("Play");
-//     });
-//   }, 10);
-// });
-
 (function () {
   "use strict";
 
@@ -71,44 +16,44 @@
       sliderSize,
       slideSize,
       animationDuration,
-      autoplayInterval,
+      autoplayInterval
     ) {
       (this.startSetup = new startSetup(
         sliderSize,
         slideSize,
         animationDuration,
-        autoplayInterval,
+        autoplayInterval
       )),
         (this.wrapper = newSlider.querySelector(".wrapper"));
 
       this.slides = newSlider.querySelectorAll(
-        ".circular-slider .wrapper .slides-holder .slides-holder__item",
+        ".circular-slider .wrapper .slides-holder .slides-holder__item"
       );
 
       this.slidesSize = 0;
 
       this.descriptionsHolder = newSlider.querySelector(
-        ".circular-slider .wrapper .descriptions",
+        ".circular-slider .wrapper .descriptions"
       );
 
       this.descriptions = newSlider.querySelectorAll(
-        ".circular-slider .wrapper .descriptions .descriptions__item",
+        ".circular-slider .wrapper .descriptions .descriptions__item"
       );
 
       this.slidesHolder = newSlider.querySelector(
-        ".circular-slider .wrapper .slides-holder",
+        ".circular-slider .wrapper .slides-holder"
       );
 
       this.btnLeft = newSlider.querySelector(
-        ".circular-slider .wrapper .controls .controls__left",
+        ".circular-slider .wrapper .controls .controls__left"
       );
 
       this.btnRight = newSlider.querySelector(
-        ".circular-slider .wrapper .controls .controls__right",
+        ".circular-slider .wrapper .controls .controls__right"
       );
 
       this.btnAutoplay = newSlider.querySelector(
-        ".circular-slider .wrapper .controls .controls__autoplay",
+        ".circular-slider .wrapper .controls .controls__autoplay"
       );
 
       this.currentAngle = 0;
@@ -116,7 +61,7 @@
       this.stepAngle =
         (2 * Math.PI) /
         newSlider.querySelectorAll(
-          ".circular-slider .wrapper .slides-holder .slides-holder__item",
+          ".circular-slider .wrapper .slides-holder .slides-holder__item"
         ).length;
 
       this.currentSlide = 0;
@@ -154,8 +99,8 @@
       this.setSize(Math.round(radius));
     }
     setSize(radius) {
-      this.wrapper.style.width = 20 * radius + "px";
-      this.wrapper.style.height = 10 * radius + "px";
+      this.wrapper.style.width = 2 * radius + "px";
+      this.wrapper.style.height = radius + "px";
 
       let r = 2 * radius * (1 - this.startSetup.slideSize);
       this.slidesHolder.style.width = this.slidesHolder.style.height = r + "px";
@@ -170,7 +115,7 @@
 
       this.slidesSize = Math.min(
         2 * radius * this.startSetup.slideSize,
-        this.stepAngle * radius * (1 - this.startSetup.slideSize) - 50,
+        this.stepAngle * radius * (1 - this.startSetup.slideSize) - 50
       );
       this.descriptionsHolder.style.fontSize =
         window.innerHeight < window.innerWidth ? "1.2vh" : "1.2vw";
@@ -199,11 +144,43 @@
       this.removeStyle();
       this.resetNavs();
 
-      this.currentSlide -= multiplier;
-      this.currentAngle -= ((this.stepAngle * 180) / Math.PI) * multiplier;
-      this.slidesHolder.style.transform =
-        "rotate( " + this.currentAngle + "deg )";
-      this.addStyle();
+      if (this.currentSlide === this.slides.length - 1 && multiplier === -1) {
+        this.slidesHolder.style.transform = "rotate( -360deg )";
+        this.currentSlide = this.currentAngle = 0;
+        this.addStyle();
+
+        setTimeout(function () {
+          _this.slidesHolder.style.transitionDuration = 0 + "s";
+          _this.slidesHolder.style.transform =
+            "rotate( " + _this.currentAngle + "deg )";
+          setTimeout(function () {
+            _this.slidesHolder.style.transitionDuration =
+              _this.startSetup.animationDuration + "ms";
+          }, 20);
+        }, this.startSetup.animationDuration);
+      } else if (this.currentSlide === 0 && multiplier === 1) {
+        this.slidesHolder.style.transform =
+          "rotate( " + (this.stepAngle * 180) / Math.PI + "deg )";
+        this.currentSlide = _this.slides.length - 1;
+        this.currentAngle = (-(2 * Math.PI - _this.stepAngle) * 180) / Math.PI;
+        this.addStyle();
+
+        setTimeout(function () {
+          _this.slidesHolder.style.transitionDuration = 0 + "s";
+          _this.slidesHolder.style.transform =
+            "rotate( " + _this.currentAngle + "deg )";
+          setTimeout(function () {
+            _this.slidesHolder.style.transitionDuration =
+              _this.startSetup.animationDuration + "ms";
+          }, 20);
+        }, this.startSetup.animationDuration);
+      } else {
+        this.currentSlide -= multiplier;
+        this.currentAngle += ((this.stepAngle * 180) / Math.PI) * multiplier;
+        this.slidesHolder.style.transform =
+          "rotate( " + this.currentAngle + "deg )";
+        this.addStyle();
+      }
     }
     setNav() {
       let _this = this;
@@ -222,7 +199,7 @@
       let _this = this;
       this.autoplay = setInterval(function () {
         _this.rotate(-1);
-      }, _this.startSetup.autoplayInterval);
+      }, _this.startSetup.autoplayInterval + 20);
     }
     removeStyle() {
       let x = this.currentSlide;
@@ -259,29 +236,29 @@
     document.querySelector(".circular-slider-1"),
     100,
     15,
-    6000,
-    2500,
+    600,
+    2500
   );
   window.circularSlider2 = new Slider(
     document.querySelector(".circular-slider-2"),
     90,
     13,
     700,
-    3000,
+    3000
   );
   window.circularSlider3 = new Slider(
     document.querySelector(".circular-slider-3"),
     80,
     18,
     800,
-    3700,
+    3700
   );
   window.circularSlider4 = new Slider(
     document.querySelector(".circular-slider-4"),
     70,
     20,
     900,
-    4200,
+    4200
   );
 
   let sliders = [

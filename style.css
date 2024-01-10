@@ -396,6 +396,7 @@ table {
   color: #8eb8e5;
   font-size: 1.5em;
   opacity: 0.7;
+  z-index: 1;
 }
 .circular-slider .wrapper .controls__left,
 .circular-slider .wrapper .controls__right {
@@ -454,7 +455,9 @@ table {
   align-items: center;
   position: relative;
   z-index: 100;
+  transform: rotate(180deg); /* Rotate the entire slider upside down */
 }
+
 .circular-slider .wrapper .slides-holder__item {
   border-radius: 50%;
   border: 2px solid #7c99b4;
@@ -470,6 +473,9 @@ table {
   transition: 0.3s linear all;
   -webkit-filter: brightness(70%);
   filter: brightness(70%);
+  transform: rotate(
+    -180deg
+  ); /* Rotate each item back to its correct orientation */
 }
 .circular-slider .wrapper .slides-holder__item img {
   width: 100%;
