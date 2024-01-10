@@ -16,44 +16,38 @@
       sliderSize,
       slideSize,
       animationDuration,
-      autoplayInterval
+      autoplayInterval,
     ) {
-      (this.startSetup = new startSetup(
+      this.startSetup = new startSetup(
         sliderSize,
         slideSize,
         animationDuration,
-        autoplayInterval
-      )),
-        (this.wrapper = newSlider.querySelector(".wrapper"));
+        autoplayInterval,
+      );
+      this.wrapper = newSlider.querySelector(".wrapper");
 
       this.slides = newSlider.querySelectorAll(
-        ".circular-slider .wrapper .slides-holder .slides-holder__item"
+        ".circular-slider .wrapper .slides-holder .slides-holder__item",
       );
 
       this.slidesSize = 0;
 
-      this.descriptionsHolder = newSlider.querySelector(
-        ".circular-slider .wrapper .descriptions"
-      );
+      this.hoverPaused = false;
 
       this.descriptions = newSlider.querySelectorAll(
-        ".circular-slider .wrapper .descriptions .descriptions__item"
+        ".circular-slider .wrapper .descriptions__item",
       );
 
       this.slidesHolder = newSlider.querySelector(
-        ".circular-slider .wrapper .slides-holder"
+        ".circular-slider .wrapper .slides-holder",
       );
 
       this.btnLeft = newSlider.querySelector(
-        ".circular-slider .wrapper .controls .controls__left"
+        ".circular-slider .wrapper .controls .controls__left",
       );
 
       this.btnRight = newSlider.querySelector(
-        ".circular-slider .wrapper .controls .controls__right"
-      );
-
-      this.btnAutoplay = newSlider.querySelector(
-        ".circular-slider .wrapper .controls .controls__autoplay"
+        ".circular-slider .wrapper .controls .controls__right",
       );
 
       this.currentAngle = 0;
@@ -61,7 +55,7 @@
       this.stepAngle =
         (2 * Math.PI) /
         newSlider.querySelectorAll(
-          ".circular-slider .wrapper .slides-holder .slides-holder__item"
+          ".circular-slider .wrapper .slides-holder .slides-holder__item",
         ).length;
 
       this.currentSlide = 0;
@@ -69,23 +63,9 @@
       this.slidesHolder.style.transitionDuration =
         this.startSetup.animationDuration + "ms";
       this.onResize();
-      this.setAutoplay();
       this.setNav();
       this.addStyle();
-
-      let _this = this;
-      this.btnAutoplay.onclick = function () {
-        if (this.classList.contains("controls__autoplay_running")) {
-          this.classList.remove("controls__autoplay_running");
-          this.classList.add("controls__autoplay_paused");
-          clearInterval(_this.autoplay);
-          _this.autoplay = null;
-        } else {
-          this.classList.remove("controls__autoplay_paused");
-          this.classList.add("controls__autoplay_running");
-          _this.setAutoplay();
-        }
-      };
+      this.setAutoplay();
     }
     onResize() {
       let radius,
@@ -108,17 +88,12 @@
 
       this.slidesHolder.style.marginTop =
         radius * this.startSetup.slideSize + "px";
-      this.descriptionsHolder.style.width =
-        (r / 2 - r * this.startSetup.slideSize + 20) * 2 + "px";
-      this.descriptionsHolder.style.height =
-        r / 2 - r * this.startSetup.slideSize + 20 + "px";
 
       this.slidesSize = Math.min(
         2 * radius * this.startSetup.slideSize,
-        this.stepAngle * radius * (1 - this.startSetup.slideSize) - 50
+        this.stepAngle * radius * (1 - this.startSetup.slideSize) - 50,
       );
-      this.descriptionsHolder.style.fontSize =
-        window.innerHeight < window.innerWidth ? "1.2vh" : "1.2vw";
+
       for (let i = 0; i < this.slides.length; i++) {
         this.slides[i].style.width = this.slides[i].style.height =
           this.slidesSize + "px";
@@ -197,9 +172,36 @@
     }
     setAutoplay() {
       let _this = this;
-      this.autoplay = setInterval(function () {
+
+      const autoplayFn = function () {
+        if (_this.hoverPaused) {
+          return;
+        }
+
         _this.rotate(-1);
-      }, _this.startSetup.autoplayInterval + 20);
+      };
+
+      this.autoplay = setInterval(
+        autoplayFn,
+        _this.startSetup.autoplayInterval + 20,
+      );
+
+      // Add event listeners for pause and play on hover
+      this.slidesHolder.addEventListener("mouseenter", function () {
+        _this.hoverPaused = true;
+        clearInterval(_this.autoplay);
+        _this.autoplay = null;
+      });
+
+      this.slidesHolder.addEventListener("mouseleave", function () {
+        _this.hoverPaused = false;
+        if (!_this.autoplay) {
+          _this.autoplay = setInterval(
+            autoplayFn,
+            _this.startSetup.autoplayInterval + 20,
+          );
+        }
+      });
     }
     removeStyle() {
       let x = this.currentSlide;
@@ -237,35 +239,35 @@
     100,
     15,
     600,
-    2500
+    2500,
   );
-  window.circularSlider2 = new Slider(
-    document.querySelector(".circular-slider-2"),
-    90,
-    13,
-    700,
-    3000
-  );
-  window.circularSlider3 = new Slider(
-    document.querySelector(".circular-slider-3"),
-    80,
-    18,
-    800,
-    3700
-  );
-  window.circularSlider4 = new Slider(
-    document.querySelector(".circular-slider-4"),
-    70,
-    20,
-    900,
-    4200
-  );
+  // window.circularSlider2 = new Slider(
+  //   document.querySelector(".circular-slider-2"),
+  //   90,
+  //   13,
+  //   700,
+  //   3000,
+  // );
+  // window.circularSlider3 = new Slider(
+  //   document.querySelector(".circular-slider-3"),
+  //   80,
+  //   18,
+  //   800,
+  //   3700,
+  // );
+  // window.circularSlider4 = new Slider(
+  //   document.querySelector(".circular-slider-4"),
+  //   70,
+  //   20,
+  //   900,
+  //   4200,
+  // );
 
   let sliders = [
     window.circularSlider1,
-    window.circularSlider2,
-    window.circularSlider3,
-    window.circularSlider4,
+    // window.circularSlider2,
+    // window.circularSlider3,
+    // window.circularSlider4,
   ];
 
   window.onresize = function () {
