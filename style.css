@@ -513,15 +513,19 @@ table {
 .circular-slider .wrapper .descriptions__item h4 {
   font-weight: 700;
   font-size: 16px;
-  margin-bottom: 0.5rem;
+  line-height: normal;
+  margin: 0;
 }
 .circular-slider .wrapper .descriptions__item p {
   font-weight: 400;
+  line-height: normal;
   font-size: 14px;
+  margin: 0;
 }
 .circular-slider .wrapper .descriptions__item span {
   font-weight: 700;
   font-size: 17px;
+  line-height: normal;
 }
 .circular-slider .wrapper .descriptions__item .ratingPrice {
   display: flex;
